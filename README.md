@@ -74,6 +74,8 @@ Then you will only need one line for your Dockerfile:
 FROM ghcr.io/zixia/apache-php56:onbuild
 ```
 
+Example: [onbuild-example](onbuild-example/)
+
 History
 --------
 

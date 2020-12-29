@@ -17,7 +17,7 @@ RUN apt-get update && \
 
 COPY apache_default /etc/apache2/sites-available/000-default.conf
 COPY entrypoint.sh /
-RUN chmod +x /usr/local/bin/run
+RUN chmod +x /entrypoint.sh
 RUN a2enmod rewrite
 
 EXPOSE 80
