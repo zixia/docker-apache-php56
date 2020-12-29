@@ -24,3 +24,5 @@ RUN a2enmod rewrite
 
 EXPOSE 80
 CMD ["/usr/local/bin/run"]
+
+LABEL org.opencontainers.image.source https://github.com/zixia/docker-apache-php56
