@@ -71,8 +71,8 @@ jobs:
 
       - name: Build & Push image:onbuild
         if: github.event_name == 'push' && github.ref == 'origin/main'
-        run: docker build . --file Dockerfile.onbuild --tag $IMAGE_NAME:onbuild
         run: |
+          docker build . --file Dockerfile.onbuild --tag $IMAGE_NAME:onbuild
           IMAGE_ID=$(echo ${{ github.repository }} | sed 's/^docker-//')
           IMAGE_ID=ghcr.io/"$IMAGE_ID"
           # Change all uppercase to lowercase
