@@ -46,15 +46,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Build image
-        run: docker build . --file Dockerfile --tag $IMAGE_NAME
-
       - name: Log into registry
         run: echo "${{ secrets.CR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
+      - name: Build image
+        run: docker build . --file Dockerfile --tag $IMAGE_NAME
+
       - name: Push image
         run: |
-          IMAGE_ID=ghcr.io/${{ github.repository }}
+          IMAGE_ID=$(echo ${{ github.repository }} | sed 's/^docker-//')
+          IMAGE_ID=ghcr.io/"$IMAGE_ID"
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
           # Strip git ref prefix from version
@@ -63,6 +64,20 @@ jobs:
           [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
           # Use Docker `latest` tag convention
           [ "$VERSION" == "main" ] && VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+
+      - name: Build & Push image:onbuild
+        if: github.event_name == 'push' && github.ref == 'origin/main'
+        run: docker build . --file Dockerfile.onbuild --tag $IMAGE_NAME:onbuild
+        run: |
+          IMAGE_ID=$(echo ${{ github.repository }} | sed 's/^docker-//')
+          IMAGE_ID=ghcr.io/"$IMAGE_ID"
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          VERSION=onbuild
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION

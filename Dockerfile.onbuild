@@ -1,0 +1,6 @@
+FROM ghcr.io/zixia/apache-php56
+MAINTAINER Huan <zixia@zixia.net>
+
+ONBUILD COPY apache_default /etc/apache2/sites-available/000-default.conf
+ONBUILD COPY webroot /webroot
+ONBUILD COPY VERSION /webroot
