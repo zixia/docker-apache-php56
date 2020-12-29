@@ -16,11 +16,11 @@ RUN apt-get update && \
       vim
 
 COPY apache_default /etc/apache2/sites-available/000-default.conf
-COPY run /usr/local/bin/run
+COPY entrypoint.sh /
 RUN chmod +x /usr/local/bin/run
 RUN a2enmod rewrite
 
 EXPOSE 80
-CMD ["/usr/local/bin/run"]
+ENTRYPOINT ["/entrypoint.sh"]
 
 LABEL org.opencontainers.image.source https://github.com/zixia/docker-apache-php56
