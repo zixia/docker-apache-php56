@@ -1,8 +1,6 @@
 FROM debian:jessie
 MAINTAINER Alexander Schenkel <alex@alexi.ch>
 
-VOLUME ["/var/www"]
-
 RUN apt-get update && \
     apt-get install -y \
       locales \

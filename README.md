@@ -59,6 +59,30 @@ Configurations
   * display_errors = On
   * error_reporting = E_ALL (default, overridable per env variable)
 
+Onbuild
+--------
+
+We have a image with `ONBUILD` for convenience.
+
+1. `apache_default`: will copy to `/etc/apache2/sites-available/000-default.conf`
+1. `webroot/`: will copy to `/webroot`
+1. `VERSION`: will copy to `/webroot`
+
+Then you will only need one line for your Dockerfile:
+
+```dockerfile
+FROM ghcr.io/zixia/apache-php56:onbuild
+```
+
+History
+--------
+
+### v0.1 (Dec 29, 2020)
+
+1. `ONBULD` support by Huan
+1. Forked from <https://github.com/bylexus/docker-apache-php56>
+
+
 Credit
 --------
 
