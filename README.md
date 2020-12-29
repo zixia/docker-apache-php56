@@ -37,6 +37,7 @@ Apache is configured to log both access and error log to STDOUT. So you can simp
 
 Installed packages
 -------------------
+
 * Debian 8 (jessie)
 * locales
 * apache2
@@ -48,6 +49,7 @@ Installed packages
 * php5-ldap
 * php5-mysql
 * php5-pgsql
+* vim
 
 Configurations
 ----------------
@@ -56,3 +58,22 @@ Configurations
 * php.ini:
   * display_errors = On
   * error_reporting = E_ALL (default, overridable per env variable)
+
+Credit
+--------
+
+This repo is forked from <https://github.com/bylexus/docker-apache-php56> and tuned for better needs of [@huan](https://github.com/huan)
+
+Maintainer
+------------
+
+[Huan](https://github.com/huan) [(李卓桓)](https://linkedin.com/in/zixia), SYSOP of zixia.net <zixia@zixia.net>
+
+[![Profile of Huan LI (李卓桓) on StackOverflow](https://stackoverflow.com/users/flair/1123955.png)](https://stackoverflow.com/users/1123955/huan)
+
+Copyright & License
+---------------------
+
+- Code & Docs © 2020-2021 zixia.net
+- Code released under the Apache-2.0 License
+- Docs released under Creative Commons
