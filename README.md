@@ -85,6 +85,19 @@ History
 1. Forked from <https://github.com/bylexus/docker-apache-php56>
 
 
+Motivation
+------------
+
+To create this `ONBUILD` image is because that I have to restore serval very old LAMP websites, like [17SALSA](https://17salsa.com), [CEIBS Mobi Club](https://ceibsmobi.com), etc.
+
+The old website are totally a mess, and what I want to is to use Git to manage the code, all the data stored in a data disk on Azure, and using an Azure MySQL database instance with DevOps from GitHub Action.
+
+When I split the source code out of the website and trying to use `bylexus/apache-php56` I found that it will be easier to use if we can have a `ONBULD` image.
+
+That's my story of this repo.
+
+Huan, Dec 29, 2020
+
 Credit
 --------
 

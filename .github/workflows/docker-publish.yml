@@ -26,7 +26,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Run tests
+      - name: Run tests (docker-compose)
         run: |
           if [ -f docker-compose.test.yml ]; then
             docker-compose --file docker-compose.test.yml build
@@ -34,6 +34,10 @@ jobs:
           else
             docker build . --file Dockerfile
           fi
+
+      - name: Run tests (Makefile)
+        run: make test
+
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
   push:
