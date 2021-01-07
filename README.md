@@ -1,18 +1,15 @@
-apache-php56
-===================================
+# apache-php56
 
 A Docker image based on Debian Jessie, serving PHP 5.6 running as Apache Module. Useful for Web developers in need for a fixed PHP version. In addition, the `error_reporting` setting in php.ini is configurable per container via environment variable.
 
-Tags
------
+## Tags
 
 * latest: Debian 8 (Jessie), Apache 2.4, PHP 5.6.x with support for setting `error_reporting`
 
-Usage
-------
+## Usage
 
-```
-$ docker run -d -P bylexus/apache-php56
+```sh
+docker run -d -P bylexus/apache-php56
 ```
 
 With all the options:
@@ -34,9 +31,7 @@ Apache is configured to log both access and error log to STDOUT. So you can simp
 
 `docker logs -f container-id`
 
-
-Installed packages
--------------------
+## Installed packages
 
 * Debian 8 (jessie)
 * locales
@@ -51,22 +46,20 @@ Installed packages
 * php5-pgsql
 * vim
 
-Configurations
-----------------
+## Configurations
 
 * Apache: .htaccess-Enabled in webroot (mod_rewrite with AllowOverride all)
 * php.ini:
   * display_errors = On
   * error_reporting = E_ALL (default, overridable per env variable)
 
-Onbuild
---------
+## Onbuild
 
 We have a image with `ONBUILD` for convenience.
 
-1. `apache_default`: will copy to `/etc/apache2/sites-available/000-default.conf`
-1. `webroot/`: will copy to `/webroot`
-1. `VERSION`: will copy to `/webroot`
+1. `apache-default.conf`: will copy to `/etc/apache2/sites-available/000-default.conf`
+1. `www/`: will copy to `/var/www`
+1. `VERSION`: will copy to `/var/www`
 
 Then you will only need one line for your Dockerfile:
 
@@ -76,17 +69,14 @@ FROM ghcr.io/zixia/apache-php56:onbuild
 
 Example: [onbuild-example](onbuild-example/)
 
-History
---------
+## History
 
 ### v0.1 (Dec 29, 2020)
 
 1. `ONBULD` support by Huan
 1. Forked from <https://github.com/bylexus/docker-apache-php56>
 
-
-Motivation
-------------
+## Motivation
 
 To create this `ONBUILD` image is because that I have to restore serval very old LAMP websites, like [17SALSA](https://17salsa.com)([repo](https://github.com/zixia/17salsa.com)), [CEIBS Mobi Club](https://ceibsmobi.com)([repo](https://github.com/zixia/ceibsmobi.com)), etc.
 
@@ -98,21 +88,18 @@ That's my story of this repo.
 
 Huan, Dec 29, 2020
 
-Credit
---------
+## Credit
 
 This repo is forked from <https://github.com/bylexus/docker-apache-php56> and tuned for better needs of [@huan](https://github.com/huan)
 
-Maintainer
-------------
+## Maintainer
 
 [Huan](https://github.com/huan) [(李卓桓)](https://linkedin.com/in/zixia), SYSOP of zixia.net <zixia@zixia.net>
 
 [![Profile of Huan LI (李卓桓) on StackOverflow](https://stackoverflow.com/users/flair/1123955.png)](https://stackoverflow.com/users/1123955/huan)
 
-Copyright & License
----------------------
+## Copyright & License
 
-- Code & Docs © 2020-2021 zixia.net
-- Code released under the Apache-2.0 License
-- Docs released under Creative Commons
+* Code & Docs © 2020-2021 zixia.net
+* Code released under the Apache-2.0 License
+* Docs released under Creative Commons

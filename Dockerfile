@@ -1,5 +1,5 @@
 FROM debian:jessie
-MAINTAINER Alexander Schenkel <alex@alexi.ch>
+MAINTAINER Huan <zixia@zixia.net>
 
 RUN apt-get update && \
     apt-get install -y \
@@ -15,9 +15,8 @@ RUN apt-get update && \
       php5-pgsql \
       vim
 
-COPY apache_default /etc/apache2/sites-available/000-default.conf
-COPY entrypoint.sh /
-RUN chmod +x /entrypoint.sh
+COPY entrypoint.sh        /
+COPY apache-default.conf /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 
 EXPOSE 80

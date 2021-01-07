@@ -11,5 +11,5 @@ echo "error_reporting = $PHP_ERROR_REPORTING" >> /etc/php5/cli/php.ini
 
 source /etc/apache2/envvars
 rm -f "$APACHE_PID_FILE"
-cat /webroot/VERSION
+[ -e /var/www/VERSION ] && cat /var/www/VERSION
 exec /usr/sbin/apache2 -DFOREGROUND "$@"

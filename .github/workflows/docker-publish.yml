@@ -45,7 +45,7 @@ jobs:
     needs: test
 
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/v[0-9]+'))
 
     steps:
       - uses: actions/checkout@v2
@@ -56,31 +56,37 @@ jobs:
       - name: Build image
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
 
-      - name: Push image
+      - name: Push image to ghcr.io
         run: |
-          IMAGE_ID=$(echo ${{ github.repository }} | sed 's/\/docker-/\//')
-          IMAGE_ID=ghcr.io/"$IMAGE_ID"
-          # Change all uppercase to lowercase
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          # Strip git ref prefix from version
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          # Strip "v" prefix from tag name
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-          # Use Docker `latest` tag convention
-          [ "$VERSION" == "main" ] && VERSION=latest
+          IMAGE_ID=$(./scripts/image_id.sh ${{ github.repository }})
+          VERSION=`cat VERSION`
+          BRANCH=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
+          read VERSION_TAG BRANCH_TAG <<< $(./scripts/image_tag.sh $VERSION $BRANCH)
+
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
-          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
-          docker push $IMAGE_ID:$VERSION
-          echo ${{ github.ref }}
+          echo VERSION_TAG=$VERSION_TAG
+          echo BRANCH_TAG=$BRANCH_TAG
+
+          IMAGE_TAG_VERSION=$IMAGE_ID:$VERSION_TAG
+          docker tag $IMAGE_NAME $IMAGE_TAG_VERSION
+          docker push $IMAGE_TAG_VERSION
+
+          if [ -n "$BRANCH_TAG" ]; then
+            IMAGE_TAG_BRANCH=$IMAGE_ID:$BRANCH_TAG
+            docker tag $IMAGE_NAME $IMAGE_TAG_BRANCH
+            docker push $IMAGE_TAG_BRANCH
+          fi
 
       - name: Build & Push image:onbuild
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
-          IMAGE_ID=$(echo ${{ github.repository }} | sed 's/\/docker-/\//')
-          IMAGE_ID=ghcr.io/"$IMAGE_ID"
-          # Change all uppercase to lowercase
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          IMAGE_ID=$(./scripts/image_id.sh ${{ github.repository }})
+          sed -i "s/FROM .*$/FROM $IMAGE_NAME/" Dockerfile.onbuild
+
           echo IMAGE_ID=$IMAGE_ID
+          cat Dockerfile.onbuild
+
           docker build . --file Dockerfile.onbuild --tag $IMAGE_ID:onbuild
           docker push $IMAGE_ID:onbuild
