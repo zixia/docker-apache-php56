@@ -1,6 +1,6 @@
 FROM ghcr.io/zixia/apache-php56
 MAINTAINER Huan <zixia@zixia.net>
 
-ONBUILD COPY apache_default /etc/apache2/sites-available/000-default.conf
+ONBUILD COPY apache-default.conf /etc/apache2/sites-available/000-default.conf
 ONBUILD COPY www /var/www
 ONBUILD COPY VERSION /var/www
